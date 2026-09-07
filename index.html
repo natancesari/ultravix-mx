@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultravix - Suplemento Alimenticio</title>
+    <style>
+        /* Reset básico e tipografia neutra */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #FCF8F2; /* Fundo Creme */
+            color: #333333;
+            line-height: 1.6;
+            /* Flexbox para garantir centralização perfeita no Desktop */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px 15px;
+        }
+
+        /* Contêiner Principal - Responsivo (Celular e PC) */
+        .container {
+            width: 100%;
+            max-width: 500px; /* Trava a largura no PC para não esticar demais */
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px 25px;
+            border-top: 6px solid #E66C6C; /* Detalhe Rosa/Salmão */
+            margin: 0 auto;
+        }
+        
+        /* Cabeçalho e Imagem */
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #eaeaea;
+            display: block;
+        }
+        
+        /* Descrição Neutra */
+        .description {
+            text-align: center;
+            font-size: 16px;
+            color: #444444;
+            margin-bottom: 25px;
+        }
+        
+        /* Seção de Preço */
+        .price-box {
+            text-align: center;
+            background-color: #FFF7F7;
+            border: 2px dashed #E66C6C;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .price-old {
+            text-decoration: line-through;
+            color: #888888;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .price-new {
+            color: #E66C6C;
+            font-size: 36px;
+            font-weight: 800;
+            display: block;
+            line-height: 1;
+        }
+        
+        /* Botão de Compra */
+        .cta-button {
+            display: block;
+            width: 100%;
+            background-color: #52B756; /* Verde Ultravix */
+            color: #ffffff;
+            text-align: center;
+            padding: 18px 10px;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(82, 183, 86, 0.25);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .cta-button:hover {
+            background-color: #429c46;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(82, 183, 86, 0.3);
+        }
+        
+        .cod-badge {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #429c46;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        /* Rodapé - Links e Isenção */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eeeeee;
+            font-size: 12px;
+            color: #888888;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .footer-links {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .footer-links a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #E66C6C;
+        }
+        
+        .footer-separator {
+            color: #cccccc;
+        }
+
+        /* Estilos dos Modais (Pop-ups Responsivos) */
+        .modal-overlay {
+            display: none; /* Oculto por padrão */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro transparente */
+            backdrop-filter: blur(3px); /* Desfoque moderno */
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            padding: 30px 25px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: left;
+            transform: translateY(20px);
+            animation: slideUp 0.3s forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); }
+        }
+
+        .modal-content h3 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 20px;
+            padding-right: 30px;
+            border-bottom: 2px solid #FCF8F2;
+            padding-bottom: 10px;
+        }
+        
+        .modal-content p {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .contact-email {
+            display: inline-block;
+            background-color: #FCF8F2;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #E66C6C;
+            text-decoration: none;
+            margin-bottom: 15px;
+            border: 1px solid #f0e9e1;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaaaaa;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        
+        .close-btn:hover {
+            color: #E66C6C;
+        }
+
+        /* Ajustes para telas muito pequenas (Smartphones antigos) */
+        @media (max-width: 360px) {
+            .price-new { font-size: 30px; }
+            .cta-button { font-size: 20px; }
+            .modal-content { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Título do Produto -->
+        <h1>Ultravix</h1>
+
+        <!-- Imagem do Produto (Substitua o src pelo link da sua imagem) -->
+        <img src="prod.ultravix.png" alt="Envase de Ultravix" class="image-placeholder">
+
+        <!-- Texto neutro e seguro -->
+        <div class="description">
+            <p>Ultravix es un suplemento en cápsulas diseñado con ingredientes de alta calidad. Formulado específicamente para integrarse fácilmente a tu rutina diaria. Realiza tu reserva en línea hoy mismo de forma rápida y sencilla. Disfruta de la tranquilidad de pagar únicamente al momento de recibir el producto en tu domicilio.</p>
+        </div>
+
+        <!-- Preço Corrigido -->
+        <div class="price-box">
+            <span class="price-old">Precio Regular: $1,180 MXN</span>
+            <span class="price-new">$590 MXN</span>
+        </div>
+
+        <!-- Botão com Link de Afiliação -->
+        <a href="https://8sjbk.doctorimpact.com/l/?sub1={gclid}" class="cta-button">
+            Reservar Ahora
+        </a>
+        <div class="cod-badge">
+            📦 Pago Contra Entrega (Pagas al recibir)
+        </div>
+
+        <!-- Rodapé Limpo com Menu de Políticas -->
+        <div class="footer">
+            <p>Este producto no es un medicamento. El consumo de este producto es responsabilidad de quien lo recomienda y de quien lo usa.</p>
+            
+            <div class="footer-links">
+                <a onclick="abrirModal('modal-aviso')">Aviso Legal</a>
+                <span class="footer-separator">|</span>
+                <a onclick="abrirModal('modal-privacidad')">Política de Privacidad</a>
+                <span class="footer-separator">|</span>
+                <a onclick="abrirModal('modal-terminos')">Términos de Servicio</a>
+                <span class="footer-separator">|</span>
+                <a onclick="abrirModal('modal-contacto')">Contacto</a>
+            </div>
+            
+            <p style="margin-top: 15px;">&copy; 2026 Ultravix México. Todos los derechos reservados.</p>
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAIS (ABAS DE POLÍTICAS) - NÃO APAGAR    -->
+    <!-- ========================================== -->
+    
+    <!-- Modal Aviso Legal -->
+    <div id="modal-aviso" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-aviso')">&times;</span>
+            <h3>Aviso Legal y de Responsabilidad</h3>
+            <p>La información proporcionada en esta página tiene fines puramente informativos. Este producto es un suplemento alimenticio y no está diseñado para diagnosticar, tratar, curar o prevenir ninguna enfermedad.</p>
+            <p>Los resultados pueden variar de una persona a otra dependiendo de factores como la dieta, el estilo de vida y la condición física. Le recomendamos consultar a un profesional de la salud antes de comenzar a utilizar este o cualquier otro suplemento.</p>
+        </div>
+    </div>
+
+    <!-- Modal Política de Privacidade -->
+    <div id="modal-privacidad" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-privacidad')">&times;</span>
+            <h3>Política de Privacidad</h3>
+            <p>Su privacidad es nuestra prioridad. Toda la información personal solicitada en nuestro formulario de reserva (como nombre, dirección y número de teléfono) se utiliza estrictamente con el fin de procesar su solicitud, confirmar el envío y coordinar la entrega del producto.</p>
+            <p>Implementamos medidas de seguridad para proteger sus datos. No vendemos, alquilamos ni compartimos su información con terceros ajenos a la logística de entrega. Al utilizar nuestro sitio, usted acepta la recopilación y el uso de su información de acuerdo con esta política.</p>
+        </div>
+    </div>
+
+    <!-- Modal Termos de Serviço -->
+    <div id="modal-terminos" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-terminos')">&times;</span>
+            <h3>Términos y Condiciones de Servicio</h3>
+            <p>Este sitio web opera como un canal de solicitud y distribución independiente. Ofrecemos la modalidad de "Pago Contra Entrega" (Cash on Delivery), lo que significa que el compromiso de pago se realiza únicamente cuando el producto es entregado físicamente en la dirección proporcionada por el cliente.</p>
+            <p>Nos reservamos el derecho de rechazar o cancelar cualquier reserva si detectamos actividad inusual o datos incorrectos. Los tiempos de entrega son estimados y pueden variar según la ubicación y la logística de las paqueterías locales en México.</p>
+        </div>
+    </div>
+
+    <!-- Modal Contato -->
+    <div id="modal-contacto" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-contacto')">&times;</span>
+            <h3>Contacto</h3>
+            <p>Si tiene alguna duda sobre su reserva, el estado de su envío o requiere asistencia general, estamos para ayudarle a través de nuestro correo de soporte:</p>
+            
+            <!-- E-mail Adicionado Aqui -->
+            <a href="mailto:suportegeralnutra@gmail.com" class="contact-email">suportegeralnutra@gmail.com</a>
+            
+            <p>También puede comunicarse con nuestro equipo de logística y atención al cliente al momento en que nuestros operadores lo contacten telefónicamente para confirmar su pedido. Asegúrese de proporcionar un número de teléfono válido durante su registro.</p>
+        </div>
+    </div>
+
+    <!-- Script JavaScript que faz as abas funcionarem -->
+    <script>
+        // Função para abrir a aba correspondente
+        function abrirModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Evita que a página de fundo role enquanto lê a política
+        }
+        
+        // Função para fechar a aba
+        function fecharModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto'; // Devolve a rolagem para a página
+        }
+        
+        // Permite fechar a aba clicando fora da caixa de texto
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = "none";
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+
+</body>
+</html>
